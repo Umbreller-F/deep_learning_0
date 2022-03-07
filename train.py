@@ -1,5 +1,3 @@
-from tkinter.tix import MAIN
-from pip import main
 import torch
 import torch.nn as nn
 # import torch.nn.functional as F

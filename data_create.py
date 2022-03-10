@@ -5,7 +5,7 @@ import math
 import random
 
 with open('dataset.data','w') as f:
-    for _ in range(200):
+    for _ in range(20000):
         x=random.uniform(0, 4*math.pi)
         f.write(str(x))
         f.write(',')

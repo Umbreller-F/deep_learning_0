@@ -16,8 +16,8 @@ class Net(nn.Module):
         # self.activate = nn.Sigmoid()
         self.fc2 = nn.Linear(hidden_size,hidden_size)
         self.fc3 = nn.Linear(hidden_size,hidden_size)
-        # self.fc4 = nn.Linear(hidden_size,hidden_size)
-        # self.fc5 = nn.Linear(hidden_size,hidden_size)
+        self.fc4 = nn.Linear(hidden_size,hidden_size)
+        self.fc5 = nn.Linear(hidden_size,hidden_size)
         # self.af2 = nn.Tanh()
         self.fc0 = nn.Linear(hidden_size,n_output)
     
@@ -28,10 +28,10 @@ class Net(nn.Module):
         out = self.activate(out)
         out = self.fc3(out)
         out = self.activate(out)
-        # out = self.fc4(out)
-        # out = self.activate(out)
-        # out = self.fc5(out)
-        # out = self.activate(out)
+        out = self.fc4(out)
+        out = self.activate(out)
+        out = self.fc5(out)
+        out = self.activate(out)
         out = self.fc0(out)
         return out
 
@@ -54,11 +54,11 @@ if __name__=="__main__":
     hidden_size=10
     n_output=1
     batch_size=5
-    training_size=2000
+    training_size=20000
 
     model = Net(input_size, hidden_size, n_output)
     print(model)
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
     loss_func = nn.L1Loss()
 
     with open('dataset.data') as my_data:  # 读取文件部分
@@ -98,11 +98,22 @@ if __name__=="__main__":
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+        x=torch.unsqueeze(torch.linspace(0, 4, 101),dim=1)
+        x=x*np.pi
+        plt.style.use('ggplot')
+        plt.plot(x.numpy(), model(x).detach().numpy())
+        plt.title("epoch:{}".format(epoch))
+        plt.show()
     
-    x=torch.unsqueeze(torch.linspace(0, 4, 51),dim=1)
+    x=torch.unsqueeze(torch.linspace(0, 4, 101),dim=1)
     x=x*np.pi
+    plt.style.use('ggplot')
     plt.plot(x.numpy(), model(x).detach().numpy())
+    plt.title("result")
     plt.show()
+
+    torch.save(model, 'net1.pkl')
+    torch.save(model.state_dict(),'net1_params.pkl')
 
 
 

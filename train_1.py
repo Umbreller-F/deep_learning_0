@@ -60,6 +60,7 @@ if __name__=="__main__":
     print(model)
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
     loss_func = nn.L1Loss()
+    loss_his = []
 
     with open('dataset.data') as my_data:  # 读取文件部分
         lines = my_data.readlines()
@@ -98,6 +99,7 @@ if __name__=="__main__":
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+            loss_his.append(loss.data.numpy())
         x=torch.unsqueeze(torch.linspace(0, 4, 101),dim=1)
         x=x*np.pi
         plt.style.use('ggplot')
@@ -110,6 +112,11 @@ if __name__=="__main__":
     plt.style.use('ggplot')
     plt.plot(x.numpy(), model(x).detach().numpy())
     plt.title("result")
+    plt.show()
+
+    plt.plot(loss_his)
+    plt.xlabel('Steps')
+    plt.ylabel('Loss')
     plt.show()
 
     torch.save(model, 'net1.pkl')

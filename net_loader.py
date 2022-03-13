@@ -9,7 +9,7 @@ x=x*np.pi
 
 model_copy1=torch.load('net1.pkl')
 plt.style.use('ggplot')
-plt.plot(x.numpy(), model_copy1(x).detach().numpy())
+plt.plot(x.numpy(), model_copy1(x).data.numpy())
 plt.title("copy1")
 plt.show()
 
